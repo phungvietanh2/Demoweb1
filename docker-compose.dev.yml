@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql-server-container
+    environment:
+      SA_PASSWORD: "yourStrong(!)Password"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1444:1433"
+    volumes:
+      - sql-server-data:/var/opt/mssql
+    networks:
+      - backend
+  cv-docker-container:
+    image: anhpv01/cv-docker:v1.0.2
+    container_name: cv-docker-container
+    ports:
+      - 8085:8080
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+volumes:
+  sql-server-data:
+
+networks:
+  backend:
+    external: true
+    name: cv-NETWORK
